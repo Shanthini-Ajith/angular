@@ -1,0 +1,99 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+
+    <div class="form-group mb-3">
+        <input type="text" formControlName="email" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" placeholder="email" />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">Email is required</div>
+            <div *ngIf="f['email'].errors['email']">Email is invalid</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="dropdown">
+            <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                2 Weeks
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">4 Weeks</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="dropdown">
+            <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Industry
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">4 Weeks</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <input type="text" formControlName="organisationName" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['organisationName'].errors }" placeholder="organisation Name" />
+        <div *ngIf="submitted && f['organisationName'].errors" class="invalid-feedback">
+            <div *ngIf="f['organisationName'].errors['required']">organisation Name is required</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <input type="text" formControlName="organisationWebsite" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['organisationWebsite'].errors }" placeholder="organisation Website" />
+        <div *ngIf="submitted && f['organisationWebsite'].errors" class="invalid-feedback">
+            <div *ngIf="f['organisationWebsite'].errors['required']">organisation Website is required</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <input type="text" formControlName="ContactPerson" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['ContactPerson'].errors }" placeholder="Contact Person" />
+        <div *ngIf="submitted && f['ContactPerson'].errors" class="invalid-feedback">
+            <div *ngIf="f['ContactPerson'].errors['required']">Contact Person is required</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <input type="text" formControlName="ContactEmail" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['ContactEmail'].errors }" placeholder="Contact Email" />
+        <div *ngIf="submitted && f['ContactEmail'].errors" class="invalid-feedback">
+            <div *ngIf="f['ContactEmail'].errors['required']">Contact Email is required</div>
+            <div *ngIf="f['ContactEmail'].errors['ContactEmail']">Contact Email is invalid</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <input type="text" formControlName="Technology" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['Technology'].errors }" placeholder="Technology" />
+        <div *ngIf="submitted && f['Technology'].errors" class="invalid-feedback">
+            <div *ngIf="f['Technology'].errors['required']">Technology is required</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <input type="text" formControlName="Duration" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['Duration'].errors }" placeholder="Duration" />
+        <div *ngIf="submitted && f['Duration'].errors" class="invalid-feedback">
+            <div *ngIf="f['Duration'].errors['required']">Duration is required</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="value">Accept Letter From organisation</label>
+        <input class="form-control-lg" id="formFileLg" type="file">
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="value">Request Letter</label>
+        <input class="form-control-lg" id="formFileLg" type="file">
+    </div>
+
+    <div class="form-group mb-3">
+        <input class="btn btn-danger"  [disabled]="!form.valid" type="submit">
+    </div>
+
+</form>

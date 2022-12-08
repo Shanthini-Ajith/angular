@@ -1,0 +1,126 @@
+<section class="vh-100">
+  <div class="container-fluid">
+    <div class="row d-flex align-items-center justify-content-center mb-2 vh-100">
+      <div class="col-md-8 col-lg-7 col-xl-6">
+        <div class="logo float-start">
+          <img src="../../../assets/photos/S.png" alt="">
+        </div>
+      </div>
+      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1 register-form">
+        <form [formGroup]="form" (submit)="onSubmit()">
+          <div class="form-group mb-3">
+            <mat-label>First Name</mat-label>
+            <input type="text" formControlName="firstname" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['firstname'].errors }" />
+            <div *ngIf="submitted && f['firstname'].errors" class="invalid-feedback">
+              <div *ngIf="f['firstname'].errors['required']">Firstname is required</div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <mat-label>Last Name</mat-label>
+            <input type="text" formControlName="lastname" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['lastname'].errors }" />
+            <div *ngIf="submitted && f['lastname'].errors" class="invalid-feedback">
+              <div *ngIf="f['lastname'].errors['required']">Lastname is required</div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <mat-label>Address</mat-label>
+            <input type="text" formControlName="address" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" />
+            <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+              <div *ngIf="f['address'].errors['required']">Address is required</div>
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <mat-form-field appearance="fill">
+              <mat-label>Date Of Birth</mat-label>
+              <input matInput class="form-control" formControlName="dob" [matDatepicker]="picker">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <div *ngIf="submitted && f['dob'].errors" class="invalid-feedback">
+                <div *ngIf="f['dob'].errors['required']">DOB is required</div>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group mb-3">
+            <mat-label>Mobile Number</mat-label>
+            <input type="tel" maxlength="10" [pattern]="'[789][0-9]{9}'" formControlName="inputCountryCode"
+              class="form-control" autocomplete="off"
+              [ngClass]="{ 'is-invalid': (submitted && f['inputCountryCode'].errors) }">
+            <div
+              *ngIf="(submitted && f['inputCountryCode'].errors ) || (f['inputCountryCode'].errors && (f['inputCountryCode'].dirty || f['inputCountryCode'].touched))"
+              class="invalid-feedback">
+              <div *ngIf="f['inputCountryCode'].errors['required']">This field is required.</div>
+              <div *ngIf="f['inputCountryCode'].errors['pattern']">Invalid phone number.</div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Register Number</mat-label>
+              <input matInput formControlName="registerNumber" class="form-control">
+            </mat-form-field>
+          </div>
+
+          <div class="form-group mb-3">
+            <mat-label>Email</mat-label>
+            <input type="text" formControlName="email" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+              <div *ngIf="f['email'].errors['required']">Email is required</div>
+              <div *ngIf="f['email'].errors['email']">Email is invalid</div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <mat-label>Password</mat-label>
+            <input type="password" formControlName="password" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+            <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+              <div *ngIf="f['password'].errors['required']">Password is required</div>
+              <div *ngIf="f['password'].errors['minlength']">
+                Password must be at least 6 characters
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <mat-label>Confirm Password</mat-label>
+            <input type="password" formControlName="confirmPassword" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }" />
+            <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+              <div *ngIf="f['confirmPassword'].errors['required']">
+                Confirm Password is required
+              </div>
+              <div *ngIf="f['confirmPassword'].errors['matching']">
+                Confirm Password does not match
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3 form-check">
+            <input type="checkbox" formControlName="acceptTerms" class="form-check-input"
+              [ngClass]="{ 'is-invalid': submitted && f['acceptTerms'].errors }" />
+            <mat-label for="acceptTerms" class="form-check-label">I have read and agree to the Terms</mat-label>
+            <div *ngIf="submitted && f['acceptTerms'].errors" class="invalid-feedback">
+              Accept Terms is required
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <button type="submit" [disabled]="!form.valid" class="btn btn-primary me-5">Register</button>
+            <button type="button" (click)="onReset()" class="btn btn-warning float-right">
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
