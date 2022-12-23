@@ -1,10 +1,13 @@
-import { CommonModule, NgClass, NgIf } from '@angular/common';
+import { CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import Validation from '../../validations/must-match';
+import { ApiCallService } from 'src/app/services/api-call.service';
+import { RegisterInterface } from 'src/app/interface/register-interface';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -13,8 +16,8 @@ import Validation from '../../validations/must-match';
   styleUrls: ['./register-page.component.scss'],
   imports: [ReactiveFormsModule, CommonModule, MatDatepickerModule, MatNativeDateModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [MatDatepickerModule]
-  })
+  providers: [MatDatepickerModule, ApiCallService]
+})
 export class RegisterPageComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
@@ -29,10 +32,13 @@ export class RegisterPageComponent implements OnInit {
     confirmPassword: new FormControl(''),
     acceptTerms: new FormControl(false),
   });
-  
+  formVal!: RegisterInterface;
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder,
+    private apiCallService: ApiCallService,
+    private router: Router) {
+  }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group(
@@ -72,11 +78,29 @@ export class RegisterPageComponent implements OnInit {
       return;
     }
     if (this.form.valid) {
-      alert('successfully register');
+      this.formValueMap();
+      this.apiCallService.registerUser(this.formVal).subscribe(data => {
+        this.form.reset();
+        this.router.navigate(['/login'], {
+          queryParams: { page: 'student' }
+        });
+      })
     }
+  }
 
-
-    console.log(JSON.stringify(this.form.value, null, 2));
+  formValueMap() {
+    const datePipe = new DatePipe('en-US');
+    const date = datePipe.transform(this.form.value.dob, 'yyyy/MM/dd');
+    this.formVal = {
+      fname: this.form.value.firstname,
+      lname: this.form.value.lastname,
+      address: this.form.value.address,
+      dob: date,
+      mobileno: this.form.value.inputCountryCode,
+      register_no: this.form.value.registerNumber,
+      email: this.form.value.email,
+      password: this.form.value.password,
+    }
   }
 
   onReset(): void {
