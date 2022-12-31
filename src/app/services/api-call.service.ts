@@ -12,7 +12,7 @@ export class ApiCallService {
   constructor(private http: HttpClient) {}
 
   public registerUser(register: RegisterInterface): Observable<any> {
-    const url = 'https://qm3qruafpb.execute-api.ap-south-1.amazonaws.com/testing';
+    const url = 'https://qm3qruafpb.execute-api.ap-south-1.amazonaws.com/deployapi/insertDataDb';
     return this.http.post<any>(url, register);
   }
 

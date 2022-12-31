@@ -9,6 +9,7 @@ import { StaffDashboardComponent } from './pages/staff-dashboard/staff-dashboard
 import { PermissionComponent } from './pages/student-dashboard/permission/permission.component';
 import { StudentDashboardComponent } from './pages/student-dashboard/student-dashboard.component';
 import { NavComponent } from './shared/nav/nav.component';
+import { OtpBoxComponent } from './shared/otp-box/otp-box.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'login', component: LoginPageComponent, title: 'Login Page' },
   { path: 'signup', component: RegisterPageComponent, title: 'Signup Page' },
   { path: 'student', component: StudentDashboardComponent, title: 'Student Page' },
+  { path: 'confirmSignup', component: OtpBoxComponent, title: 'Confirmation Page' },
   { path: 'staff', component: StaffDashboardComponent, title: 'Staff Page' },
   { path: 'admin', component: AdminDashboardComponent, title: 'Admin Page' },
   { path: 'hod', component: HodDashboardComponent, title: 'Hod Page' },

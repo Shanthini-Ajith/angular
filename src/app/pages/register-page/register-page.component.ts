@@ -6,8 +6,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import Validation from '../../validations/must-match';
 import { ApiCallService } from 'src/app/services/api-call.service';
-import { RegisterInterface } from 'src/app/interface/register-interface';
+import { CognitoSignup, RegisterInterface } from 'src/app/interface/register-interface';
 import { Router } from '@angular/router';
+import { CognitoService } from 'src/app/services/cognito.service';
 
 @Component({
   standalone: true,
@@ -32,12 +33,16 @@ export class RegisterPageComponent implements OnInit {
     confirmPassword: new FormControl(''),
     acceptTerms: new FormControl(false),
   });
-  formVal!: RegisterInterface;
+  formVal: RegisterInterface;
+  cognitosignup: CognitoSignup;
   submitted = false;
 
   constructor(private formBuilder: FormBuilder,
     private apiCallService: ApiCallService,
-    private router: Router) {
+    private router: Router,
+    private cognitoService: CognitoService) {
+    this.formVal = {} as RegisterInterface;
+    this.cognitosignup = {} as CognitoSignup;
   }
 
   ngOnInit(): void {
@@ -78,13 +83,32 @@ export class RegisterPageComponent implements OnInit {
       return;
     }
     if (this.form.valid) {
+      this.signupMap()
       this.formValueMap();
-      this.apiCallService.registerUser(this.formVal).subscribe(data => {
-        this.form.reset();
-        this.router.navigate(['/login'], {
-          queryParams: { page: 'student' }
-        });
+      console.log(this.cognitosignup);
+      console.log(this.formVal);
+      this.cognitoService.signUp(this.cognitosignup).subscribe(data => {
+        if (data.message === "Please confirm your signup") {
+          this.apiCallService.registerUser(this.formVal).subscribe(data => {
+            this.form.reset();
+            this.router.navigate(['/confirmSignup'], {
+              queryParams: { page: 'student' }
+            });
+          })
+        }
+        else {
+          this.form.reset();
+        }
       })
+    }
+  }
+
+  signupMap() {
+    this.cognitosignup = {
+      username: this.form.value.email.toLowerCase(),
+      email: this.form.value.email.toLowerCase(),
+      password: this.form.value.password,
+      name: this.form.value.firstname,
     }
   }
 
@@ -98,8 +122,8 @@ export class RegisterPageComponent implements OnInit {
       dob: date,
       mobileno: this.form.value.inputCountryCode,
       register_no: this.form.value.registerNumber,
-      email: this.form.value.email,
-      password: this.form.value.password,
+      email: this.form.value.email.toLowerCase(),
+      password: this.form.value.password
     }
   }
 
