@@ -18,25 +18,25 @@ export class HomeComponent implements OnInit {
 
   studentClick() {
     this.router.navigate(['/login'], {
-      queryParams: { page: 'student' }
+      queryParams: { returnUrl: 'student' }
     });
   }
 
   adminClick() {
     this.router.navigate(['/login'], {
-      queryParams: { page: 'admin' }
+      queryParams: { returnUrl: 'admin' }
     });
   }
 
   staffClick() {
     this.router.navigate(['/login'], {
-      queryParams: { page: 'staff' }
+      queryParams: { returnUrl: 'staff' }
     });
   }
 
   hodClick() {
     this.router.navigate(['/login'], {
-      queryParams: { page: 'hod' }
+      queryParams: { returnUrl: 'hod' }
     });
   }
 

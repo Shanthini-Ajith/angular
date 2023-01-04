@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guard/auth.guard';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { HodDashboardComponent } from './pages/hod-dashboard/hod-dashboard.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -16,7 +17,7 @@ const routes: Routes = [
   { path:'home', component: HomeComponent, title: 'Home Page'},
   { path: 'login', component: LoginPageComponent, title: 'Login Page' },
   { path: 'signup', component: RegisterPageComponent, title: 'Signup Page' },
-  { path: 'student', component: StudentDashboardComponent, title: 'Student Page' },
+  { path: 'student', component: StudentDashboardComponent, title: 'Student Page',canActivate: [AuthGuard] },
   { path: 'confirmSignup', component: OtpBoxComponent, title: 'Confirmation Page' },
   { path: 'staff', component: StaffDashboardComponent, title: 'Staff Page' },
   { path: 'admin', component: AdminDashboardComponent, title: 'Admin Page' },

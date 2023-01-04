@@ -18,5 +18,10 @@ export interface CognitoSignup {
 export interface ConfirmCognitoSignup {
     username: string,
     password: string,
-    code: string;
+    code: string
+}
+
+export interface Signin {
+    username: string,
+    password: string
 }

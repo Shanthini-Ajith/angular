@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { CognitoSignup, ConfirmCognitoSignup, RegisterInterface } from '../interface/register-interface';
+import { CognitoSignup, ConfirmCognitoSignup, RegisterInterface, Signin } from '../interface/register-interface';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({

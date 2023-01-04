@@ -17,7 +17,7 @@ import { NavComponent } from 'src/app/shared/nav/nav.component';
 
 export class StudentDashboardComponent implements OnInit {
   
-  menuItemslist = ['home', 'permission', 'submission', 'completion'];
+  menuItemslist = ['logout', 'permission', 'submission', 'completion'];
   constructor(private rotuter: Router) { }
 
   ngOnInit(): void {

@@ -9,6 +9,7 @@ import { ApiCallService } from 'src/app/services/api-call.service';
 import { CognitoSignup, RegisterInterface } from 'src/app/interface/register-interface';
 import { Router } from '@angular/router';
 import { CognitoService } from 'src/app/services/cognito.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -35,6 +36,7 @@ export class RegisterPageComponent implements OnInit {
   });
   formVal: RegisterInterface;
   cognitosignup: CognitoSignup;
+  subscriptions = new Subscription();
   submitted = false;
 
   constructor(private formBuilder: FormBuilder,
@@ -85,21 +87,18 @@ export class RegisterPageComponent implements OnInit {
     if (this.form.valid) {
       this.signupMap()
       this.formValueMap();
-      console.log(this.cognitosignup);
-      console.log(this.formVal);
-      this.cognitoService.signUp(this.cognitosignup).subscribe(data => {
+      this.subscriptions.add(this.cognitoService.signUp(this.cognitosignup).subscribe(data => {
         if (data.message === "Please confirm your signup") {
-          this.apiCallService.registerUser(this.formVal).subscribe(data => {
-            this.form.reset();
+          this.subscriptions.add(this.apiCallService.registerUser(this.formVal).subscribe(data => {
             this.router.navigate(['/confirmSignup'], {
               queryParams: { page: 'student' }
             });
-          })
+          }))
         }
         else {
           this.form.reset();
         }
-      })
+      }))
     }
   }
 
@@ -130,6 +129,10 @@ export class RegisterPageComponent implements OnInit {
   onReset(): void {
     this.submitted = false;
     this.form.reset();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
 }

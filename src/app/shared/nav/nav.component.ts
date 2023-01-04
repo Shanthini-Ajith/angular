@@ -11,6 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { StudentDashboardComponent } from '../../pages/student-dashboard/student-dashboard.component';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   standalone: true,
@@ -36,12 +37,12 @@ export class NavComponent {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authenticationService: AuthenticationService
     ) {
        this.route.queryParams.subscribe(data => {
         this.dynamicTitles = data['page'];
        })
-      console.log(this.data);
     }
 
     onNavClick() {
@@ -52,6 +53,13 @@ export class NavComponent {
        this.router.navigate([this.dynamicTitles], {
         queryParams: this.dynamicTitles,
       });
+    }
+
+    onItemClick(item: string) {
+      console.log(item);
+      if(item === 'logout') {
+        this.authenticationService.logout();
+      }
     }
 
 }
