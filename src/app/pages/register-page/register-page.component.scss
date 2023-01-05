@@ -17,3 +17,12 @@ body {
 .otp-form .otp-field:focus {
 	border-bottom-color: var(--bs-dark);
 }
+.field-icon {
+	float: right;
+	margin-left: -25px;
+	margin-top: -25px;
+	position: relative;
+	z-index: 2;
+	right: 12px;
+    bottom: 4px;
+  }

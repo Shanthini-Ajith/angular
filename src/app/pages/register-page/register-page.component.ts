@@ -1,5 +1,5 @@
-import { CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -10,7 +10,22 @@ import { CognitoSignup, RegisterInterface } from 'src/app/interface/register-int
 import { Router } from '@angular/router';
 import { CognitoService } from 'src/app/services/cognito.service';
 import { Subscription } from 'rxjs';
-
+import { isEmpty } from 'lodash';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import * as moment from 'moment';
+ 
+export const APP_DATE_FORMATS = {
+  parse: {
+      dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+      dateInput: 'DD/MM/YYYY',
+      monthYearLabel: 'MMMM YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 @Component({
   standalone: true,
   selector: 'app-register-page',
@@ -18,13 +33,16 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./register-page.component.scss'],
   imports: [ReactiveFormsModule, CommonModule, MatDatepickerModule, MatNativeDateModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [MatDatepickerModule, ApiCallService]
-})
+  providers: [MatDatepickerModule, ApiCallService,
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]},
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
+  })
 export class RegisterPageComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
-    firstname: new FormControl(''),
-    lastname: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
     dob: new FormControl(''),
     address: new FormControl(''),
     inputCountryCode: new FormControl(''),
@@ -36,8 +54,13 @@ export class RegisterPageComponent implements OnInit {
   });
   formVal: RegisterInterface;
   cognitosignup: CognitoSignup;
+  maxDate: Date;
   subscriptions = new Subscription();
   submitted = false;
+  showPassword = false;
+  password: any;
+  passwormatch: any;
+  showPasswordmatch = false;
 
   constructor(private formBuilder: FormBuilder,
     private apiCallService: ApiCallService,
@@ -45,13 +68,20 @@ export class RegisterPageComponent implements OnInit {
     private cognitoService: CognitoService) {
     this.formVal = {} as RegisterInterface;
     this.cognitosignup = {} as CognitoSignup;
+    this.maxDate = new Date();
+    this.defineForm();
   }
 
   ngOnInit(): void {
+    this.password = 'password';
+    this.passwormatch = 'password';
+  }
+
+  defineForm() {
     this.form = this.formBuilder.group(
       {
-        firstname: ['', Validators.required],
-        lastname: ['', Validators.required],
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
         dob: ['', Validators.required],
         address: ['', Validators.required],
         inputCountryCode: ['', [Validators.required, Validators.pattern("[0-9 ]{10}")]],
@@ -61,42 +91,105 @@ export class RegisterPageComponent implements OnInit {
           '',
           [
             Validators.required,
-            Validators.minLength(6),
-            Validators.maxLength(40)
+            Validators.minLength(8),
+            Validators.pattern(new RegExp('^()(?=.*[A-Z])(?=.*[a-z ])(?=.*[0-9])(?=.*[@$!%*#?&.,:;"\'+/<=>\\\\\[\\]^_|{}~()\\-]).{8,}$'))
           ]
         ],
         confirmPassword: ['', Validators.required],
-        acceptTerms: [false, Validators.requiredTrue]
+        acceptTerms: [false]
       },
       {
-        validators: [Validation.match('password', 'confirmPassword')]
+        validators: [Validation.match('password', 'confirmPassword'),
+        this.checkName(),
+        this.noWhitespaceValidator]
       }
     );
+    return this.form;
+  }
+
+  public noWhitespaceValidator(control: FormGroup) {
+    const firstName = control.controls['firstName'];
+    const lastName = control.controls['lastName'];
+
+    if (firstName.value) {
+      const isWhitespace = firstName.value.trim().length === 0;
+      if (isWhitespace) {
+        firstName.setErrors({ required: { message: `Field is required` } });
+      } else {
+        const errors = { ...firstName?.errors };
+        delete errors?.['required'];
+        firstName.setErrors(isEmpty(errors) ? null : { ...errors });
+      }
+    }
+    if (lastName.value) {
+      const isWhitespace = lastName.value.trim().length === 0;
+      if (isWhitespace) {
+        lastName.setErrors({ required: { message: `Field is required` } });
+      } else {
+        const errors = { ...lastName?.errors };
+        delete errors?.['required'];
+        lastName.setErrors(isEmpty(errors) ? null : { ...errors });
+      }
+    }
   }
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
 
+  toggleShow() {
+    if (this.password === 'password') {
+      this.password = 'text';
+      this.showPassword = true;
+    } else {
+      this.password = 'password';
+      this.showPassword = false;
+    }
+  }
+  toggleShowPas() {
+    if (this.passwormatch === 'password') {
+      this.passwormatch = 'text';
+      this.showPasswordmatch = true;
+    } else {
+      this.passwormatch = 'password';
+      this.showPasswordmatch = false;
+    }
+  }
+
+  private checkName() {
+    return (formGroup: FormGroup) => {
+      const firstName = formGroup.controls['firstName'];
+      const lastName = formGroup.controls['lastName'];
+
+      // set error on matchingControl if validation fails
+      if (!firstName.value && !lastName.value) {
+        firstName.setErrors({ required: { message: `Either first or last name is required` } });
+      } else {
+        const errors = { ...firstName?.errors };
+        delete errors?.['required'];
+        firstName.setErrors(isEmpty(errors) ? null : { ...errors });
+      }
+    };
+  }
+
   onSubmit(): void {
     this.submitted = true;
-
     if (this.form.invalid) {
       return;
     }
     if (this.form.valid) {
       this.signupMap()
       this.formValueMap();
+      console.log(this.form);
       this.subscriptions.add(this.cognitoService.signUp(this.cognitosignup).subscribe(data => {
-        if (data.message === "Please confirm your signup") {
+        if (data?.message === "Please confirm your signup") {
           this.subscriptions.add(this.apiCallService.registerUser(this.formVal).subscribe(data => {
-            this.router.navigate(['/confirmSignup'], {
-              queryParams: { page: 'student' }
-            });
+            if (data) {
+              this.router.navigate(['/confirmSignup'], {
+                queryParams: { page: 'student' }
+              });
+            }
           }))
-        }
-        else {
-          this.form.reset();
         }
       }))
     }
@@ -107,18 +200,17 @@ export class RegisterPageComponent implements OnInit {
       username: this.form.value.email.toLowerCase(),
       email: this.form.value.email.toLowerCase(),
       password: this.form.value.password,
-      name: this.form.value.firstname,
+      name: this.form.value.firstName,
     }
   }
 
   formValueMap() {
-    const datePipe = new DatePipe('en-US');
-    const date = datePipe.transform(this.form.value.dob, 'yyyy/MM/dd');
+    const dateformat = moment(this.form.value.dob).format('yyyy/MM/DD');
     this.formVal = {
-      fname: this.form.value.firstname,
-      lname: this.form.value.lastname,
+      fname: this.form.value.firstName,
+      lname: this.form.value.lastName,
       address: this.form.value.address,
-      dob: date,
+      dob: dateformat,
       mobileno: this.form.value.inputCountryCode,
       register_no: this.form.value.registerNumber,
       email: this.form.value.email.toLowerCase(),
