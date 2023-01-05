@@ -186,7 +186,7 @@ export class RegisterPageComponent implements OnInit {
           this.subscriptions.add(this.apiCallService.registerUser(this.formVal).subscribe(data => {
             if (data) {
               this.router.navigate(['/confirmSignup'], {
-                queryParams: { page: 'student' }
+                queryParams: { returnUrl: 'student' }
               });
             }
           }))

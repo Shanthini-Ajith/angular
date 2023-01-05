@@ -22,6 +22,7 @@ export class PermissionComponent implements OnInit {
     email: new FormControl(''),
   });
   
+  menuItemslist = ['logout', 'permission', 'submission', 'completion'];
   submitted = false;
 
   constructor(private formBuilder: FormBuilder) {}

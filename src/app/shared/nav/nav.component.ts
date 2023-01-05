@@ -33,6 +33,7 @@ export class NavComponent {
   @Input() data: any = [];
   @Output() navClick = new EventEmitter<void>();
   dynamicTitles: any;
+  pages : string[] =[];
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -55,10 +56,16 @@ export class NavComponent {
       });
     }
 
-    onItemClick(item: string) {
-      console.log(item);
-      if(item === 'logout') {
+    onItemClick(item: any) {
+      this.pages.push(item);
+      const permission = 'permission'
+      if(item.includes('logout')) {
         this.authenticationService.logout();
+      }
+      if(item.includes('permission')) {
+        this.router.navigate(['permission'], {
+          queryParams: {returnUrl: permission},
+        });
       }
     }
 

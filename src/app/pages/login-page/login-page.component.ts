@@ -67,7 +67,7 @@ export class LoginPageComponent implements OnInit {
     //True if all the fields are filled
     if (this.submitted) {
       console.log(this.urlslug);
-      if (this.urlslug.returnUrl.indexOf('student') > -1) {
+      if (this.urlslug.returnUrl.includes('student') > -1) {
         this.formValuePatch();
         this.authenticationService.login(this.cognitosignin.username, this.cognitosignin.password).subscribe(data => {
           console.log(data);

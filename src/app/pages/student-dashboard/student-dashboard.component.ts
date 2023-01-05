@@ -24,7 +24,7 @@ export class StudentDashboardComponent implements OnInit {
   }
 
   studentNav() {
-    this.rotuter.navigate(['/permission'])
+    // this.rotuter.navigate(['/permission'])
   }
 
 }
