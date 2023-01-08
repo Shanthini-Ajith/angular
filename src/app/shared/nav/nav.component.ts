@@ -12,6 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { StudentDashboardComponent } from '../../pages/student-dashboard/student-dashboard.component';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ApiCallService } from 'src/app/services/api-call.service';
 
 @Component({
   standalone: true,
@@ -34,6 +35,7 @@ export class NavComponent {
   @Output() navClick = new EventEmitter<void>();
   dynamicTitles: any;
   pages : string[] =[];
+  email: string = "";
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -41,31 +43,28 @@ export class NavComponent {
     private router: Router,
     private authenticationService: AuthenticationService
     ) {
-       this.route.queryParams.subscribe(data => {
-        this.dynamicTitles = data['page'];
-       })
+        const url = JSON.parse(localStorage.getItem('data')!);
+        if(url.roles.includes('returnUrl')) {
+          this.dynamicTitles = url.roles;
+        }
+        else {
+          this.dynamicTitles = url.roles
+        }
     }
 
     onNavClick() {
       this.navClick.emit();
-      this.route.queryParams.subscribe(data => {
-        this.dynamicTitles = data['page'];
-       })
-       this.router.navigate([this.dynamicTitles], {
-        queryParams: this.dynamicTitles,
-      });
+       this.router.navigate([this.dynamicTitles]);
     }
 
     onItemClick(item: any) {
       this.pages.push(item);
       const permission = 'permission'
       if(item.includes('logout')) {
-        this.authenticationService.logout();
+        this.authenticationService.logout(this.dynamicTitles);
       }
       if(item.includes('permission')) {
-        this.router.navigate(['permission'], {
-          queryParams: {returnUrl: permission},
-        });
+        this.router.navigate(['permission']);
       }
     }
 

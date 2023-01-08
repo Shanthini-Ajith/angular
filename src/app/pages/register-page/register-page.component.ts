@@ -7,7 +7,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import Validation from '../../validations/must-match';
 import { ApiCallService } from 'src/app/services/api-call.service';
 import { CognitoSignup, RegisterInterface } from 'src/app/interface/register-interface';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CognitoService } from 'src/app/services/cognito.service';
 import { Subscription } from 'rxjs';
 import { isEmpty } from 'lodash';
@@ -61,10 +61,12 @@ export class RegisterPageComponent implements OnInit {
   password: any;
   passwormatch: any;
   showPasswordmatch = false;
+  urlslug: any;
 
   constructor(private formBuilder: FormBuilder,
     private apiCallService: ApiCallService,
     private router: Router,
+    private route: ActivatedRoute,
     private cognitoService: CognitoService) {
     this.formVal = {} as RegisterInterface;
     this.cognitosignup = {} as CognitoSignup;
@@ -75,6 +77,9 @@ export class RegisterPageComponent implements OnInit {
   ngOnInit(): void {
     this.password = 'password';
     this.passwormatch = 'password';
+    this.route.queryParams.subscribe(data => {
+      this.urlslug = data['returnUrl'];
+    })
   }
 
   defineForm() {
@@ -105,6 +110,11 @@ export class RegisterPageComponent implements OnInit {
       }
     );
     return this.form;
+  }
+
+  addRoute() {
+    console.log('hii')
+    this.router.navigate(['/login']);
   }
 
   public noWhitespaceValidator(control: FormGroup) {
@@ -180,14 +190,11 @@ export class RegisterPageComponent implements OnInit {
     if (this.form.valid) {
       this.signupMap()
       this.formValueMap();
-      console.log(this.form);
       this.subscriptions.add(this.cognitoService.signUp(this.cognitosignup).subscribe(data => {
         if (data?.message === "Please confirm your signup") {
           this.subscriptions.add(this.apiCallService.registerUser(this.formVal).subscribe(data => {
             if (data) {
-              this.router.navigate(['/confirmSignup'], {
-                queryParams: { returnUrl: 'student' }
-              });
+              this.router.navigate(['/confirmSignup']);
             }
           }))
         }
@@ -213,6 +220,7 @@ export class RegisterPageComponent implements OnInit {
       dob: dateformat,
       mobileno: this.form.value.inputCountryCode,
       register_no: this.form.value.registerNumber,
+      roles: "student",
       email: this.form.value.email.toLowerCase(),
       password: this.form.value.password
     }

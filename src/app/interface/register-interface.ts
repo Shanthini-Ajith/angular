@@ -5,6 +5,7 @@ export interface RegisterInterface {
     dob: string | null | undefined,
     mobileno: string,
     register_no: string,
+    roles : string,
     email: string,
     password: string
 }

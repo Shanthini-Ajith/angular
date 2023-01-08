@@ -35,9 +35,16 @@ export class OtpBoxComponent implements OnInit {
     this.defineValue();
     this.cognitoService.confirmSignUp(this.confirmSignup).subscribe( data => {
       if (data.message === "Verified Successfully") {
-        this.router.navigate(['/login'], {
-          queryParams: { returnUrl: 'student' }
-        });
+        this.router.navigate(['/login']);
+      }
+    })
+  }
+
+  verifyOtp() {
+    this.defineValue();
+    this.cognitoService.verifyEmail(this.confirmSignup.username).subscribe( data => {
+      if (data) {
+        console.log(data);
       }
     })
   }

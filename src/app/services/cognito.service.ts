@@ -25,6 +25,10 @@ export class CognitoService {
     const url = 'https://zng61hhyrb.execute-api.ap-south-1.amazonaws.com/confirm-signup/confirmEmail';
     return this.http.post<any>(url, confirmSignup);
   }
+  public verifyEmail(Signup: string): Observable<any> {
+    const url = ' https://5kss3wxlne.execute-api.ap-south-1.amazonaws.com/resendEmail/resendEmail';
+    return this.http.post<any>(url, {"username": Signup});
+  }
 
   // public signIn(user: RegisterInterface): Promise<any> {
   //   return Auth.signIn(user.email, user.password)

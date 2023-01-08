@@ -13,7 +13,7 @@ import { NavComponent } from './shared/nav/nav.component';
 import { OtpBoxComponent } from './shared/otp-box/otp-box.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: '', redirectTo: 'login', pathMatch: 'full'},
   { path:'home', component: HomeComponent, title: 'Home Page'},
   { path: 'login', component: LoginPageComponent, title: 'Login Page' },
   { path: 'signup', component: RegisterPageComponent, title: 'Signup Page' },

@@ -2,5 +2,6 @@
     <div class="vh-100 d-flex justify-content-center align-items-center">
         <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:6}"></ng-otp-input> 
         <button (click)="submitOtp()" class="btn btn-primary mg-3">Submit</button>
+        <button (click)="verifyOtp()" class="btn btn-primary mg-3">Resend Otp</button>
     </div>
 </div>
