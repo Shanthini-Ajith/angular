@@ -225,11 +225,7 @@ export class RegisterPageComponent implements OnInit {
     }
   }
 
-  onReset(): void {
-    this.submitted = false;
-    this.form.reset();
-  }
-
+ 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
