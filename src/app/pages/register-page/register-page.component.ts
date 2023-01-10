@@ -113,7 +113,6 @@ export class RegisterPageComponent implements OnInit {
   }
 
   addRoute() {
-    console.log('hii')
     this.router.navigate(['/login']);
   }
 

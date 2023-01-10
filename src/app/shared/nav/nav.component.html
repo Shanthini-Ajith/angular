@@ -1,15 +1,15 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container bg-clr">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar></mat-toolbar>
     <mat-nav-list>
-      <a *ngFor="let item of data" (click)="onItemClick(item)" mat-list-item> {{item | titlecase}} </a>
+      <a *ngFor="let item of data" class="nav-link" [routerLink]="item"  routerLinkActive="active" mat-list-item> {{item | titlecase}} </a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
+  <mat-sidenav-content color="alert">
+    <mat-toolbar class="d-flex justify-content-between">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -19,6 +19,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span (navClick)="onNavClick()">{{dynamicTitles | titlecase}} Profile</span>
+      <button class="alert" (click)="logout()">Logout</button>
     </mat-toolbar>
     <!-- Add Content Here -->
     <router-outlet></router-outlet>

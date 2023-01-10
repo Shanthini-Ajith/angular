@@ -71,6 +71,8 @@ export class LoginPageComponent implements OnInit {
 
   //Add user form actions
   get f() { return this.registerForm.controls; }
+
+  
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
@@ -87,7 +89,7 @@ export class LoginPageComponent implements OnInit {
             localStorage.setItem('data', JSON.stringify(this.userDetail));
             if (this.userDetail) {
               if (this.userDetail.roles === 'student') {
-                this.router.navigate(['student']);
+                this.router.navigate(['/student/permission']);
               }
               if (this.userDetail.roles === 'hod') {
                 this.router.navigate(['hod']);

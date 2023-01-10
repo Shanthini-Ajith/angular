@@ -17,27 +17,19 @@ export class HomeComponent implements OnInit {
   }
 
   studentClick() {
-    this.router.navigate(['/signup'], {
-      queryParams: { returnUrl: 'student' }
-    });
+    this.router.navigate(['/signup'])
   }
 
   adminClick() {
-    this.router.navigate(['/signup'], {
-      queryParams: { returnUrl: 'admin' }
-    });
-  }
+    this.router.navigate(['/signup'])
+    }
 
   staffClick() {
-    this.router.navigate(['/signup'], {
-      queryParams: { returnUrl: 'staff' }
-    });
+    this.router.navigate(['/signup']);
   }
 
   hodClick() {
-    this.router.navigate(['/signup'], {
-      queryParams: { returnUrl: 'hod' }
-    });
+    this.router.navigate(['/signup']);
   }
 
 }

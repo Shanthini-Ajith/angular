@@ -11,7 +11,7 @@ import { NavComponent } from 'src/app/shared/nav/nav.component';
 })
 export class HodDashboardComponent implements OnInit {
 
-  menuItemslist = ['home', 'view requests', 'view marks', 'logout'];
+  menuItemslist = ['view requests', 'view marks', 'logout'];
   constructor() { }
 
   ngOnInit(): void {

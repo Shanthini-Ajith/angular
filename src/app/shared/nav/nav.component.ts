@@ -57,15 +57,19 @@ export class NavComponent {
        this.router.navigate([this.dynamicTitles]);
     }
 
-    onItemClick(item: any) {
-      this.pages.push(item);
-      const permission = 'permission'
-      if(item.includes('logout')) {
-        this.authenticationService.logout(this.dynamicTitles);
-      }
-      if(item.includes('permission')) {
-        this.router.navigate(['permission']);
-      }
+    // onItemClick(item: any) {
+    //   this.pages.push(item);
+    //   const permission = 'permission'
+    //   if(item.includes('logout')) {
+    //     this.authenticationService.logout(this.dynamicTitles);
+    //   }
+    //   if(item.includes('permission')) {
+    //     this.router.navigate(['permission']);
+    //   }
+    // }
+
+    logout() {
+      this.authenticationService.logout(this.dynamicTitles);
     }
 
 }

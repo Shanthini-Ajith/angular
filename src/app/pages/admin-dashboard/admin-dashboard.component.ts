@@ -11,7 +11,7 @@ import { NavComponent } from 'src/app/shared/nav/nav.component';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  menuItemslist = ['home','student details', 'hod details', 'staff details', 'logout'];
+  menuItemslist = ['student details', 'hod details', 'staff details'];
   constructor() { }
 
   ngOnInit(): void {

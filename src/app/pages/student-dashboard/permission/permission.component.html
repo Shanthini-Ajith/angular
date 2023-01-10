@@ -1,36 +1,37 @@
-<app-nav [data]="menuItemslist" ></app-nav>
 <form [formGroup]="form" (submit)="onSubmit()">
 
     <div class="form-group mb-3">
         <input type="text" formControlName="email" class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" placeholder="email" />
-        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-            <div *ngIf="f['email'].errors['required']">Email is required</div>
-            <div *ngIf="f['email'].errors['email']">Email is invalid</div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="d-grid h-3">
+            <select class="custom-select f-size mb-3" (change)="changeCity($event)" formControlName="cityName">
+                <option value="">Select the Required Weeks</option>
+                <option *ngFor="let city of City" [ngValue]="city">
+                    {{ city }}
+                </option>
+            </select>
+            <!-- error block -->
+            <!-- <div class="invalid-feedback" *ngIf="isSubmitted && cityName?.invalid">
+                <sup>*</sup>Please provide city name
+            </div> -->
         </div>
     </div>
 
     <div class="form-group mb-3">
-        <div class="dropdown">
-            <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                2 Weeks
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">4 Weeks</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="form-group mb-3">
-        <div class="dropdown">
-            <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Industry
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">4 Weeks</a></li>
-            </ul>
+        <div class="d-grid h-3">
+            <select class="custom-select f-size mb-3" (change)="changeIndustry($event)" formControlName="industryName">
+                <option value="">Select the Required Industry</option>
+                <option *ngFor="let industry of Industry" [ngValue]="industry">
+                    {{ industry }}
+                </option>
+            </select>
+            <!-- error block -->
+            <!-- <div class="invalid-feedback" *ngIf="isSubmitted && cityName?.invalid">
+                <sup>*</sup>Please provide city name
+            </div> -->
         </div>
     </div>
 
@@ -44,7 +45,8 @@
 
     <div class="form-group mb-3">
         <input type="text" formControlName="organisationWebsite" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f['organisationWebsite'].errors }" placeholder="organisation Website" />
+            [ngClass]="{ 'is-invalid': submitted && f['organisationWebsite'].errors }"
+            placeholder="organisation Website" />
         <div *ngIf="submitted && f['organisationWebsite'].errors" class="invalid-feedback">
             <div *ngIf="f['organisationWebsite'].errors['required']">organisation Website is required</div>
         </div>
@@ -76,25 +78,21 @@
     </div>
 
     <div class="form-group mb-3">
-        <input type="text" formControlName="Duration" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f['Duration'].errors }" placeholder="Duration" />
-        <div *ngIf="submitted && f['Duration'].errors" class="invalid-feedback">
-            <div *ngIf="f['Duration'].errors['required']">Duration is required</div>
-        </div>
-    </div>
-
-    <div class="form-group mb-3">
         <label for="value">Accept Letter From organisation</label>
-        <input class="form-control-lg" id="formFileLg" type="file">
+        <div *ngIf="typeOfUrl">
+        <img [src]="urlType" width="200"> </div><br/>
+        <input class="form-control" (change)="onSelectFileType($event)" id="formFileLg" type="file">
     </div>
 
     <div class="form-group mb-3">
         <label for="value">Request Letter</label>
-        <input class="form-control-lg" id="formFileLg" type="file">
+        <div *ngIf="fileTypeofUrl">
+        <img [src]="url" width="200"></div> <br/>
+        <input class="form-control" id="formFileLg" (change)="onSelectFile($event)" type="file">
     </div>
 
     <div class="form-group mb-3">
-        <input class="btn btn-danger"  [disabled]="!form.valid" type="submit">
+        <input class="btn btn-danger" [disabled]="!form.valid" type="submit">
     </div>
 
 </form>

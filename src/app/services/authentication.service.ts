@@ -15,7 +15,7 @@ export class AuthenticationService {
         private router: Router,
         private http: HttpClient
     ) {
-        this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
+        this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('data')!));
         this.user = this.userSubject.asObservable();
     }
 
@@ -40,8 +40,6 @@ export class AuthenticationService {
         localStorage.removeItem('auth');
         localStorage.removeItem('data');
         this.userSubject.next(null);
-        this.router.navigate(['/login'], {
-            queryParams: {returnUrl: url}
-        });
+        this.router.navigate(['/login']);
     }
 }
