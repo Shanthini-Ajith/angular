@@ -26,3 +26,14 @@ export interface Signin {
     username: string,
     password: string
 }
+
+export interface PermissioData {
+    email: string,
+    weeks: string,
+    industry: string,
+    organizationName: string,
+    organizationWebsite:string,
+    contactName:string,
+    contactEmail: string,
+    technology: string
+}

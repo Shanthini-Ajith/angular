@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://vul0t0psx9.execute-api.ap-south-1.amazonaws.com/signin/'
+  apiUrl: 'https://vul0t0psx9.execute-api.ap-south-1.amazonaws.com/signin/',
+  AWS_ACCESS_KEY_ID: 'AKIA2FODNEQM6QYUETN7',
+  AWS_SECRET_ACCESS_KEY: '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',
+  AWS_REGION: 'ap-south-1'
 };
 
 /*
