@@ -1,0 +1,96 @@
+<div class="container">
+  <div class="page-header">
+    <h1>Request Leave</h1>
+    <button class="btn btn-secondary" (click)="goBack()">Cancel</button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="success" class="alert alert-success">
+    {{ success }}
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="leave_type" class="required">Leave Type</label>
+        <select
+          id="leave_type"
+          formControlName="leave_type"
+          [class.error]="submitted && f['leave_type'].errors">
+          <option value="">Select Leave Type</option>
+          <option *ngFor="let type of leaveTypes" [value]="type.value">
+            {{ type.label }}
+          </option>
+        </select>
+        <div *ngIf="submitted && f['leave_type'].errors" class="form-error">
+          <span *ngIf="f['leave_type'].errors['required']">Leave type is required</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="start_date" class="required">Start Date</label>
+          <input
+            type="date"
+            id="start_date"
+            formControlName="start_date"
+            [class.error]="submitted && f['start_date'].errors">
+          <div *ngIf="submitted && f['start_date'].errors" class="form-error">
+            <span *ngIf="f['start_date'].errors['required']">Start date is required</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="end_date" class="required">End Date</label>
+          <input
+            type="date"
+            id="end_date"
+            formControlName="end_date"
+            [class.error]="submitted && (f['end_date'].errors || form.errors?.['endDateBeforeStart'])">
+          <div *ngIf="submitted && (f['end_date'].errors || form.errors?.['endDateBeforeStart'])" class="form-error">
+            <span *ngIf="f['end_date'].errors['required']">End date is required</span>
+            <span *ngIf="form.errors?.['endDateBeforeStart']">End date must be after start date</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="days-info" *ngIf="daysCalculated > 0">
+        <p>Total Days: <strong>{{ daysCalculated }} day(s)</strong></p>
+      </div>
+
+      <div class="form-group">
+        <label for="reason" class="required">Reason</label>
+        <textarea
+          id="reason"
+          formControlName="reason"
+          [class.error]="submitted && f['reason'].errors"
+          placeholder="Please provide a reason for your leave request"
+          rows="5"></textarea>
+        <div *ngIf="submitted && f['reason'].errors" class="form-error">
+          <span *ngIf="f['reason'].errors['required']">Reason is required</span>
+          <span *ngIf="f['reason'].errors['minlength']">Reason must be at least 10 characters</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="submitting">
+          <span *ngIf="submitting" class="spinner"></span>
+          <span>Submit Request</span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="goBack()"
+          [disabled]="submitting">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

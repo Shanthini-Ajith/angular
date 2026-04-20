@@ -1,0 +1,151 @@
+.navbar {
+  background-color: #2b6cb0;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.navbar-brand {
+  .app-name {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+  }
+}
+
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+
+  span {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 4px 0;
+    transition: 0.3s;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: #1e4d7b;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+
+    &.open {
+      max-height: 500px;
+    }
+  }
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+    gap: 0;
+  }
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.3s;
+  padding: 0.5rem 0;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+    padding: 0.75rem 0;
+  }
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.user-email {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.user-role {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.btn {
+  background-color: white;
+  color: #2b6cb0;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}

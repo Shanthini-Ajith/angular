@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p>Welcome to the Staff Management System</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+    <button class="btn btn-secondary btn-small" (click)="loadDashboardStats()">Retry</button>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <div *ngIf="!loading && stats" class="dashboard-content">
+    <!-- Stats Cards -->
+    <div class="grid cols-4">
+      <div class="stat-card">
+        <div class="stat-label">Total Staff</div>
+        <div class="stat-value">{{ stats.total_staff }}</div>
+      </div>
+
+      <div class="stat-card accent">
+        <div class="stat-label">Active Staff</div>
+        <div class="stat-value">{{ stats.active_staff }}</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Pending Leaves</div>
+        <div class="stat-value">{{ stats.pending_leaves }}</div>
+      </div>
+
+      <div class="stat-card accent">
+        <div class="stat-label">Present Today</div>
+        <div class="stat-value">{{ stats.today_present }}</div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Quick Actions</h3>
+      </div>
+      <div class="card-body">
+        <div class="action-buttons">
+          <button class="btn btn-primary" (click)="goToNewStaff()">Add New Staff</button>
+          <button class="btn btn-secondary" (click)="goToStaff()">View All Staff</button>
+          <button class="btn btn-primary" (click)="goToNewLeave()">Request Leave</button>
+          <button class="btn btn-secondary" (click)="goToLeaves()">View All Leaves</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Pending Leaves -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Recent Pending Leaves</h3>
+        <a href="#" class="text-primary" (click)="goToLeaves(); $event.preventDefault()">View All</a>
+      </div>
+      <div class="card-body">
+        <table *ngIf="stats.recent_leaves.length > 0">
+          <thead>
+            <tr>
+              <th>Staff Name</th>
+              <th>Leave Type</th>
+              <th>From Date</th>
+              <th>To Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let leave of stats.recent_leaves; trackBy: trackByLeaveId">
+              <td>{{ leave.staff.user.first_name }} {{ leave.staff.user.last_name }}</td>
+              <td>{{ leave.leave_type }}</td>
+              <td>{{ leave.start_date | date: 'MMM dd, yyyy' }}</td>
+              <td>{{ leave.end_date | date: 'MMM dd, yyyy' }}</td>
+              <td>
+                <span [class]="'badge badge-' + leave.status.toLowerCase()">
+                  {{ leave.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p *ngIf="stats.recent_leaves.length === 0" class="text-muted">No pending leaves</p>
+      </div>
+    </div>
+  </div>
+</div>

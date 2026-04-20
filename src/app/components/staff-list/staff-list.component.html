@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="page-header">
+    <h1>Staff Management</h1>
+    <button class="btn btn-primary" (click)="addNewStaff()">Add New Staff</button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+    <button class="btn btn-secondary btn-small" (click)="loadStaff()">Retry</button>
+  </div>
+
+  <div class="filters-section">
+    <input
+      type="text"
+      placeholder="Search by name, email, or ID"
+      class="search-input"
+      [(ngModel)]="searchTerm"
+      (keyup)="onSearch(searchTerm)">
+
+    <select
+      class="filter-select"
+      [(ngModel)]="selectedDepartment"
+      (change)="onDepartmentChange(selectedDepartment)">
+      <option value="">All Departments</option>
+      <option *ngFor="let dept of departments" [value]="dept.id">
+        {{ dept.name }}
+      </option>
+    </select>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading staff...</p>
+  </div>
+
+  <div *ngIf="!loading && staffList.length === 0" class="empty-state">
+    <p>No staff members found</p>
+    <button class="btn btn-primary" (click)="addNewStaff()">Add First Staff</button>
+  </div>
+
+  <div *ngIf="!loading && staffList.length > 0" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Employee ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Department</th>
+          <th>Designation</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let staff of staffList; trackBy: trackByStaffId">
+          <td>{{ staff.employee_id }}</td>
+          <td>{{ staff.user.first_name }} {{ staff.user.last_name }}</td>
+          <td>{{ staff.user.email }}</td>
+          <td>{{ staff.department.name }}</td>
+          <td>{{ staff.designation }}</td>
+          <td>
+            <span [class]="'badge badge-' + (staff.is_active ? 'active' : 'inactive')">
+              {{ staff.is_active ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="btn btn-secondary btn-small" (click)="viewStaff(staff.id)">View</button>
+            <button class="btn btn-primary btn-small" (click)="editStaff(staff.id)">Edit</button>
+            <button class="btn btn-danger btn-small" (click)="deleteStaff(staff.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button class="btn btn-secondary" (click)="previousPage()" [disabled]="currentPage === 1">
+        Previous
+      </button>
+      <span class="page-info">
+        Page {{ currentPage }} of {{ totalPages }} ({{ totalCount }} total)
+      </span>
+      <button class="btn btn-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+        Next
+      </button>
+    </div>
+  </div>
+</div>

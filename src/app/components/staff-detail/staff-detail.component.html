@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="page-header">
+    <button class="btn btn-secondary" (click)="goBack()">Back to Staff</button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+    <button class="btn btn-secondary btn-small" (click)="loadStaffDetail()">Retry</button>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading staff details...</p>
+  </div>
+
+  <div *ngIf="!loading && staff" class="staff-detail">
+    <div class="detail-card">
+      <div class="card-header">
+        <h2>{{ staff.user.first_name }} {{ staff.user.last_name }}</h2>
+        <button class="btn btn-primary" (click)="editStaff()">Edit</button>
+      </div>
+
+      <div class="card-body">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <label>Employee ID</label>
+            <p>{{ staff.employee_id }}</p>
+          </div>
+
+          <div class="detail-item">
+            <label>Email</label>
+            <p>{{ staff.user.email }}</p>
+          </div>
+
+          <div class="detail-item">
+            <label>Phone</label>
+            <p>{{ staff.phone }}</p>
+          </div>
+
+          <div class="detail-item">
+            <label>Department</label>
+            <p>{{ staff.department.name }}</p>
+          </div>
+
+          <div class="detail-item">
+            <label>Designation</label>
+            <p>{{ staff.designation }}</p>
+          </div>
+
+          <div class="detail-item">
+            <label>Date of Joining</label>
+            <p>{{ staff.date_of_joining | date: 'MMM dd, yyyy' }}</p>
+          </div>
+
+          <div class="detail-item">
+            <label>Salary</label>
+            <p>{{ staff.salary | currency }}</p>
+          </div>
+
+          <div class="detail-item">
+            <label>Status</label>
+            <p>
+              <span [class]="'badge badge-' + (staff.is_active ? 'active' : 'inactive')">
+                {{ staff.is_active ? 'Active' : 'Inactive' }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="leave-history-card">
+      <div class="card-header">
+        <h3>Leave History</h3>
+      </div>
+
+      <div class="card-body">
+        <table *ngIf="leaveHistory.length > 0">
+          <thead>
+            <tr>
+              <th>Leave Type</th>
+              <th>From Date</th>
+              <th>To Date</th>
+              <th>Reason</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let leave of leaveHistory; trackBy: trackByLeaveId">
+              <td>{{ leave.leave_type }}</td>
+              <td>{{ leave.start_date | date: 'MMM dd, yyyy' }}</td>
+              <td>{{ leave.end_date | date: 'MMM dd, yyyy' }}</td>
+              <td>{{ leave.reason }}</td>
+              <td>
+                <span [class]="'badge badge-' + leave.status.toLowerCase()">
+                  {{ leave.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p *ngIf="leaveHistory.length === 0" class="text-muted">No leave requests</p>
+      </div>
+    </div>
+  </div>
+</div>

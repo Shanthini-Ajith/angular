@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="page-header">
+    <h1>Leave Requests</h1>
+    <button class="btn btn-primary" (click)="requestNewLeave()">Request New Leave</button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+    <button class="btn btn-secondary btn-small" (click)="loadLeaves()">Retry</button>
+  </div>
+
+  <div class="filters-section">
+    <select
+      class="filter-select"
+      [(ngModel)]="selectedStatus"
+      (change)="onStatusChange(selectedStatus)">
+      <option value="">All Statuses</option>
+      <option value="pending">Pending</option>
+      <option value="approved">Approved</option>
+      <option value="rejected">Rejected</option>
+    </select>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading leave requests...</p>
+  </div>
+
+  <div *ngIf="!loading && leaveList.length === 0" class="empty-state">
+    <p>No leave requests found</p>
+    <button class="btn btn-primary" (click)="requestNewLeave()">Request Leave</button>
+  </div>
+
+  <div *ngIf="!loading && leaveList.length > 0" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Staff Name</th>
+          <th>Leave Type</th>
+          <th>From Date</th>
+          <th>To Date</th>
+          <th>Duration</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let leave of leaveList; trackBy: trackByLeaveId">
+          <td>{{ leave.staff.user.first_name }} {{ leave.staff.user.last_name }}</td>
+          <td>{{ leave.leave_type }}</td>
+          <td>{{ leave.start_date | date: 'MMM dd, yyyy' }}</td>
+          <td>{{ leave.end_date | date: 'MMM dd, yyyy' }}</td>
+          <td>
+            {{ (leave.end_date | date: 'yyyy-MM-dd') - (leave.start_date | date: 'yyyy-MM-dd') + 1 }} days
+          </td>
+          <td>{{ leave.reason | slice: 0:30 }}{{ leave.reason.length > 30 ? '...' : '' }}</td>
+          <td>
+            <span [class]="'badge badge-' + leave.status.toLowerCase()">
+              {{ leave.status }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button
+              *ngIf="leave.status === 'pending'"
+              class="btn btn-success btn-small"
+              (click)="approveLeave(leave.id)">
+              Approve
+            </button>
+            <button
+              *ngIf="leave.status === 'pending'"
+              class="btn btn-danger btn-small"
+              (click)="rejectLeave(leave.id)">
+              Reject
+            </button>
+            <span *ngIf="leave.status !== 'pending'" class="text-muted">--</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button class="btn btn-secondary" (click)="previousPage()" [disabled]="currentPage === 1">
+        Previous
+      </button>
+      <span class="page-info">
+        Page {{ currentPage }} of {{ totalPages }} ({{ totalCount }} total)
+      </span>
+      <button class="btn btn-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+        Next
+      </button>
+    </div>
+  </div>
+</div>

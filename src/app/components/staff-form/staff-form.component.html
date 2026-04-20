@@ -1,0 +1,160 @@
+<div class="container">
+  <div class="page-header">
+    <h1>{{ isEditMode ? 'Edit Staff Member' : 'Add New Staff Member' }}</h1>
+    <button class="btn btn-secondary" (click)="goBack()">Cancel</button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="success" class="alert alert-success">
+    {{ success }}
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading staff data...</p>
+  </div>
+
+  <div *ngIf="!loading" class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="first_name" class="required">First Name</label>
+          <input
+            type="text"
+            id="first_name"
+            formControlName="first_name"
+            [class.error]="submitted && f['first_name'].errors"
+            placeholder="John">
+          <div *ngIf="submitted && f['first_name'].errors" class="form-error">
+            <span *ngIf="f['first_name'].errors['required']">First name is required</span>
+            <span *ngIf="f['first_name'].errors['minlength']">Minimum 2 characters required</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="last_name" class="required">Last Name</label>
+          <input
+            type="text"
+            id="last_name"
+            formControlName="last_name"
+            [class.error]="submitted && f['last_name'].errors"
+            placeholder="Doe">
+          <div *ngIf="submitted && f['last_name'].errors" class="form-error">
+            <span *ngIf="f['last_name'].errors['required']">Last name is required</span>
+            <span *ngIf="f['last_name'].errors['minlength']">Minimum 2 characters required</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email" class="required">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            [class.error]="submitted && f['email'].errors"
+            placeholder="john.doe@example.com">
+          <div *ngIf="submitted && f['email'].errors" class="form-error">
+            <span *ngIf="f['email'].errors['required']">Email is required</span>
+            <span *ngIf="f['email'].errors['email']">Please enter a valid email</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone" class="required">Phone</label>
+          <input
+            type="tel"
+            id="phone"
+            formControlName="phone"
+            [class.error]="submitted && f['phone'].errors"
+            placeholder="+1-234-567-8900">
+          <div *ngIf="submitted && f['phone'].errors" class="form-error">
+            <span *ngIf="f['phone'].errors['required']">Phone is required</span>
+            <span *ngIf="f['phone'].errors['pattern']">Please enter a valid phone number</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="department" class="required">Department</label>
+          <select
+            id="department"
+            formControlName="department"
+            [class.error]="submitted && f['department'].errors">
+            <option value="">Select Department</option>
+            <option *ngFor="let dept of departments" [value]="dept.id">
+              {{ dept.name }}
+            </option>
+          </select>
+          <div *ngIf="submitted && f['department'].errors" class="form-error">
+            <span *ngIf="f['department'].errors['required']">Department is required</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="designation" class="required">Designation</label>
+          <input
+            type="text"
+            id="designation"
+            formControlName="designation"
+            [class.error]="submitted && f['designation'].errors"
+            placeholder="Software Engineer">
+          <div *ngIf="submitted && f['designation'].errors" class="form-error">
+            <span *ngIf="f['designation'].errors['required']">Designation is required</span>
+            <span *ngIf="f['designation'].errors['minlength']">Minimum 2 characters required</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date_of_joining" class="required">Date of Joining</label>
+          <input
+            type="date"
+            id="date_of_joining"
+            formControlName="date_of_joining"
+            [class.error]="submitted && f['date_of_joining'].errors">
+          <div *ngIf="submitted && f['date_of_joining'].errors" class="form-error">
+            <span *ngIf="f['date_of_joining'].errors['required']">Date of joining is required</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="salary" class="required">Salary</label>
+          <input
+            type="number"
+            id="salary"
+            formControlName="salary"
+            [class.error]="submitted && f['salary'].errors"
+            placeholder="50000">
+          <div *ngIf="submitted && f['salary'].errors" class="form-error">
+            <span *ngIf="f['salary'].errors['required']">Salary is required</span>
+            <span *ngIf="f['salary'].errors['min']">Salary must be a positive number</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="submitting">
+          <span *ngIf="submitting" class="spinner"></span>
+          <span>{{ isEditMode ? 'Update' : 'Create' }} Staff Member</span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="goBack()"
+          [disabled]="submitting">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
