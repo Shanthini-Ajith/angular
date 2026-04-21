@@ -21,7 +21,7 @@ export class AuthService {
 
   login(email: string, password: string): Observable<LoginResponse> {
     return new Observable(observer => {
-      this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, { email, password })
+      this.http.post<LoginResponse>(`${this.apiUrl}/auth/login/`, { email, password })
         .subscribe(
           response => {
             this.accessToken = response.access;
@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   register(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/register`, data);
+    return this.http.post(`${this.apiUrl}/auth/register/`, data);
   }
 
   logout(): void {
@@ -46,11 +46,11 @@ export class AuthService {
   }
 
   getProfile(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/auth/profile`);
+    return this.http.get<User>(`${this.apiUrl}/auth/profile/`);
   }
 
   updateProfile(data: any): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/auth/profile`, data);
+    return this.http.put<User>(`${this.apiUrl}/auth/profile/`, data);
   }
 
   getToken(): string | null {
@@ -67,7 +67,7 @@ export class AuthService {
     }
 
     return new Observable(observer => {
-      this.http.post<LoginResponse>(`${this.apiUrl}/auth/refresh`, { refresh: this.refreshToken })
+      this.http.post<LoginResponse>(`${this.apiUrl}/auth/refresh/`, { refresh: this.refreshToken })
         .subscribe(
           response => {
             this.accessToken = response.access;

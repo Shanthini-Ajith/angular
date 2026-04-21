@@ -28,19 +28,19 @@ export class LeaveService {
   }
 
   getById(id: number): Observable<LeaveRequest> {
-    return this.http.get<LeaveRequest>(`${this.apiUrl}/leaves/${id}`);
+    return this.http.get<LeaveRequest>(`${this.apiUrl}/leaves/${id}/`);
   }
 
   create(data: any): Observable<LeaveRequest> {
-    return this.http.post<LeaveRequest>(`${this.apiUrl}/leaves`, data);
+    return this.http.post<LeaveRequest>(`${this.apiUrl}/leaves/`, data);
   }
 
   approve(id: number): Observable<LeaveRequest> {
-    return this.http.post<LeaveRequest>(`${this.apiUrl}/leaves/${id}/approve`, {});
+    return this.http.post<LeaveRequest>(`${this.apiUrl}/leaves/${id}/approve/`, {});
   }
 
   reject(id: number, rejection_reason?: string): Observable<LeaveRequest> {
-    return this.http.post<LeaveRequest>(`${this.apiUrl}/leaves/${id}/reject`, {
+    return this.http.post<LeaveRequest>(`${this.apiUrl}/leaves/${id}/reject/`, {
       rejection_reason: rejection_reason || ''
     });
   }

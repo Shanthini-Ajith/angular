@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { StaffService } from '../../services/staff.service';
 import { StaffProfile, Department, PaginatedResponse } from '../../models/models';
@@ -8,8 +8,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-staff-list',
   templateUrl: './staff-list.component.html',
-  styleUrls: ['./staff-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./staff-list.component.scss']
 })
 export class StaffListComponent implements OnInit, OnDestroy {
   staffList: StaffProfile[] = [];

@@ -56,14 +56,10 @@ export interface Attendance {
 export interface DashboardStats {
   total_staff: number;
   active_staff: number;
-  inactive_staff: number;
-  total_leaves: number;
   pending_leaves: number;
-  approved_leaves: number;
-  rejected_leaves: number;
   today_present: number;
   today_absent: number;
-  recent_leaves: LeaveRequest[];
+  total_departments: number;
 }
 
 export interface LoginResponse {

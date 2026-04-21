@@ -7,7 +7,6 @@ import { DashboardStats, LeaveRequest } from '../../models/models';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit {
   stats: DashboardStats | null = null;

@@ -51,7 +51,7 @@
             formControlName="end_date"
             [class.error]="submitted && (f['end_date'].errors || form.errors?.['endDateBeforeStart'])">
           <div *ngIf="submitted && (f['end_date'].errors || form.errors?.['endDateBeforeStart'])" class="form-error">
-            <span *ngIf="f['end_date'].errors['required']">End date is required</span>
+            <span *ngIf="f['end_date'].errors?.['required']">End date is required</span>
             <span *ngIf="form.errors?.['endDateBeforeStart']">End date must be after start date</span>
           </div>
         </div>

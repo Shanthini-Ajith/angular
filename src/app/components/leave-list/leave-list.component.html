@@ -52,7 +52,7 @@
           <td>{{ leave.start_date | date: 'MMM dd, yyyy' }}</td>
           <td>{{ leave.end_date | date: 'MMM dd, yyyy' }}</td>
           <td>
-            {{ (leave.end_date | date: 'yyyy-MM-dd') - (leave.start_date | date: 'yyyy-MM-dd') + 1 }} days
+            {{ leave.start_date }} to {{ leave.end_date }}
           </td>
           <td>{{ leave.reason | slice: 0:30 }}{{ leave.reason.length > 30 ? '...' : '' }}</td>
           <td>

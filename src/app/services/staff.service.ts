@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { StaffProfile, Department, DashboardStats, PaginatedResponse } from '../models/models';
 
@@ -10,44 +11,43 @@ import { StaffProfile, Department, DashboardStats, PaginatedResponse } from '../
 export class StaffService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getAll(params?: any): Observable<PaginatedResponse<StaffProfile>> {
+  getAll(params: any = {}): Observable<PaginatedResponse<StaffProfile>> {
     let httpParams = new HttpParams();
-    if (params) {
-      Object.keys(params).forEach(key => {
-        if (params[key]) {
-          httpParams = httpParams.set(key, params[key]);
-        }
-      });
-    }
+    Object.keys(params).forEach(key => {
+      if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+        httpParams = httpParams.set(key, params[key]);
+      }
+    });
     return this.http.get<PaginatedResponse<StaffProfile>>(
-      `${this.apiUrl}/staff`,
-      { params: httpParams }
+      `${this.apiUrl}/staff/`, { params: httpParams }
     );
   }
 
   getById(id: number): Observable<StaffProfile> {
-    return this.http.get<StaffProfile>(`${this.apiUrl}/staff/${id}`);
+    return this.http.get<StaffProfile>(`${this.apiUrl}/staff/${id}/`);
   }
 
-  create(data: any): Observable<StaffProfile> {
-    return this.http.post<StaffProfile>(`${this.apiUrl}/staff`, data);
+  create(staffData: Partial<StaffProfile>): Observable<StaffProfile> {
+    return this.http.post<StaffProfile>(`${this.apiUrl}/staff/`, staffData);
   }
 
-  update(id: number, data: any): Observable<StaffProfile> {
-    return this.http.put<StaffProfile>(`${this.apiUrl}/staff/${id}`, data);
+  update(id: number, staffData: Partial<StaffProfile>): Observable<StaffProfile> {
+    return this.http.put<StaffProfile>(`${this.apiUrl}/staff/${id}/`, staffData);
   }
 
-  delete(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/staff/${id}`);
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/staff/${id}/`);
   }
 
   getDepartments(): Observable<Department[]> {
-    return this.http.get<Department[]>(`${this.apiUrl}/departments`);
+    return this.http.get<PaginatedResponse<Department>>(`${this.apiUrl}/departments/`).pipe(
+      map(response => response.results)
+    );
   }
 
   getDashboardStats(): Observable<DashboardStats> {
-    return this.http.get<DashboardStats>(`${this.apiUrl}/dashboard/stats`);
+    return this.http.get<DashboardStats>(`${this.apiUrl}/dashboard/stats/`);
   }
 }

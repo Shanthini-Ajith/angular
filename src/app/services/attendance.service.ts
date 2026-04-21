@@ -28,14 +28,14 @@ export class AttendanceService {
   }
 
   checkIn(): Observable<Attendance> {
-    return this.http.post<Attendance>(`${this.apiUrl}/attendance/check-in`, {});
+    return this.http.post<Attendance>(`${this.apiUrl}/attendance/check-in/`, {});
   }
 
   checkOut(): Observable<Attendance> {
-    return this.http.post<Attendance>(`${this.apiUrl}/attendance/check-out`, {});
+    return this.http.post<Attendance>(`${this.apiUrl}/attendance/check-out/`, {});
   }
 
   markAttendance(data: any): Observable<Attendance> {
-    return this.http.post<Attendance>(`${this.apiUrl}/attendance`, data);
+    return this.http.post<Attendance>(`${this.apiUrl}/attendance/`, data);
   }
 }
